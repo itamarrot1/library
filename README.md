@@ -41,15 +41,7 @@ The Library Management System is designed to facilitate the management of books,
 
 ## Setup Instructions
 
-### Prerequisites
+clone repository 
 
-- Python 3.x installed on your system
-- pip package manager
-
-### Installation
-
-1. Clone the repository:
-
-   ```bash
-   git clone https://github.com/yourusername/library-management-system.git
-   cd library-management-system
+install requirements 
+pip install -r requirements.txt
