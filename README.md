@@ -50,3 +50,9 @@ The Library Management System is designed to facilitate the management of books,
 pip install -r requirements.txt
 
 4. run flask server
+
+## if you create a new user he will not be an admin 
+to see the admin Permissions 
+username : itamar 
+password : ir123
+
