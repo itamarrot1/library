@@ -1,60 +1,55 @@
-# Project Name
+# Library Management System
 
-Brief description or introduction of your project. Include what it does and what problem it solves.
+This project is a Flask-based Library Management System (LMS) that allows users to manage books, loans, and user accounts through a RESTful API.
 
 ## Table of Contents
 
 - [About](#about)
-- [Demo](#demo)
 - [Features](#features)
-- [Getting Started](#getting-started)
+- [Technologies Used](#technologies-used)
+- [Setup Instructions](#setup-instructions)
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
-- [Usage](#usage)
+- [Endpoints](#endpoints)
+  - [Authentication](#authentication)
+  - [User Management](#user-management)
+  - [Book Management](#book-management)
+  - [Loan Management](#loan-management)
 - [Contributing](#contributing)
 - [License](#license)
 - [Acknowledgements](#acknowledgements)
 
 ## About
 
-Provide a more detailed description of your project. Explain its purpose, goals, and any other relevant information.
-
-## Demo
-
-Include a link to the live demo of your project if available.
+The Library Management System is designed to facilitate the management of books, loans, and user accounts. It provides endpoints for adding books, registering users, managing loans, and more.
 
 ## Features
 
-List the features or functionality of your project. Bullet points are typically used here.
+- User registration and authentication using JWT tokens
+- CRUD operations for books and users
+- Book loan management with due dates and return functionality
+- Admin access for managing users and books
 
-- Feature 1
-- Feature 2
-- Feature 3
+## Technologies Used
 
-## Getting Started
+- Flask
+- SQLAlchemy
+- Flask-JWT-Extended
+- Flask-CORS
+- SQLite (for local development)
+- Werkzeug
+
+## Setup Instructions
 
 ### Prerequisites
 
-List any software, libraries, or dependencies that users need to have installed before they can use your project.
+- Python 3.x installed on your system
+- pip package manager
 
 ### Installation
 
-Provide step-by-step instructions on how to install and set up your project. Include code examples if necessary.
+1. Clone the repository:
 
-## Usage
-
-Provide examples or instructions on how to use your project. Include screenshots or code snippets if applicable.
-
-## Contributing
-
-Provide guidelines for how other developers can contribute to your project. Explain the process for submitting pull requests and reporting issues.
-
-## License
-
-Specify the license under which your project is distributed. For example:
-
-This project is licensed under the [MIT License](LICENSE).
-
-## Acknowledgements
-
-List any individuals or organizations that you would like to acknowledge or thank for their contributions or support.
+   ```bash
+   git clone https://github.com/yourusername/library-management-system.git
+   cd library-management-system
