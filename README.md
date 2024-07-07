@@ -41,7 +41,12 @@ The Library Management System is designed to facilitate the management of books,
 
 ## Setup Instructions
 
-clone repository 
+1. clone repository 
 
-install requirements 
+2. open virtual env
+
+3.install requirements 
+
 pip install -r requirements.txt
+
+4. run flask server
