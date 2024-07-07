@@ -26,7 +26,7 @@ class User(db.Model):
     username = db.Column(db.String(20), unique=True, nullable=False)
     password_hash = db.Column(db.String(60), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
-    admin = db.Column(db.Boolean, nullable=False, default=True)
+    admin = db.Column(db.Boolean, nullable=False, default=False)
     loans=db.Column(db.Integer, nullable=False, default=0)
     loans_con= db.relationship('Loans', backref='user')
 
