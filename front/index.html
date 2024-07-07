@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/style.css"> <!-- Link to external stylesheet -->
+</head>
+
+<body class="background-image">
+    <div class="login">
+        <h2>Login</h2>
+        <label for="username" class="username">Username:</label>
+        <input type="text" id="username">
+        <br><br>
+        <label for="password" class="password">Password:</label>
+        <input type="password" id="password">
+        <br><br>
+        <button onclick="login()">Login</button>
+        <br>
+        <div id="message"></div>
+
+        <button><a href="register.html">Dont have a user? click here</a></button>
+    </div>
+    </div>
+
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+
+    </div>
+
+    <script> // log -in function
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            console.log(username);
+
+            axios.post('http://127.0.0.1:5000/sign-in', {
+                "username": username,
+                "password": password
+            })
+                .then(function (response) {
+                    const token = response.data.access_token;
+                    localStorage.setItem('token', token); // Store token in local storage
+                    document.getElementById('message').innerHTML = `Logged in successfully! Token: ${token}`;
+                    window.location.href = "homepage.html"
+                })
+                .catch(function (error) {
+                    console.error('Login error:', error);
+                    document.getElementById('message').innerHTML = 'Login failed. Please check your credentials.';
+                });
+        }
+    </script>
+</body>
+
+</html>

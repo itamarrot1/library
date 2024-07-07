@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="css/homepage_style.css">
+
+
+</head>
+
+<body class="background-image">
+    <header>
+        <h1 id="welcome" class="welcome"></h1>
+    </header>
+    <div class="navbar">
+    <div class="form-container">
+        <label for="bookName" class="bookName">Enter Book Name:</label>
+        <input type="text" id="bookName" name="name" required class="bookNameInput">
+        <button onclick="navigate_by_search()" class="searchButton">Search</button>
+        <button onclick="navigateToMyLoans()" class="myLoansButton">My Loans</button>
+        <button onclick="navigateToUserDetailes()" class="accountButton">My Account</button>
+        <div id="admin_ops"></div>
+    </div>
+</div>
+</div>
+    <div id="book list">
+    </div>
+    <div id="bookContainer" style="display: flex; flex-wrap: wrap;"></div>
+    <div id="deleteButton"></div>
+
+    <script> // this script check if loggin user is an admin and make changes if needed
+      axios.get('http://127.0.0.1:5000/user-role', {
+    headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+    }
+}).then(response => {
+    console.log('User role response:', response.data);
+    const isAdmin = response.data.admin;
+    const user = response.data.username
+    document.getElementById("welcome").innerText= `Welcome  ${user}`
+    console.log(user);
+    if (isAdmin) {
+        console.log('User is admin');
+        const adminOpsButton = document.createElement('button');
+        adminOpsButton.textContent = 'Admin Operations';
+        adminOpsButton.addEventListener('click', () => {
+            window.location.href = 'admin_op.html';
+        const delete_button = document.createElement('button')
+        delete_button.textContent = 'Delete book'
+        delete_button.addEventListener('click',()=> delete_book(id) )
+        add_button= document.getElementById("delete_button")
+        add_button.classList.add('adminOpsButton');
+        add_button.appendChild(delete_button)
+            // Handle admin operations if needed
+            console.log('Admin operations clicked');
+        });
+
+        // Assuming you have an element with id="admin_ops" in your HTML
+        const adminOpsContainer = document.getElementById('admin_ops');
+        adminOpsContainer.appendChild(adminOpsButton);
+    }
+}).catch(error => {
+    console.error('Error fetching user role:', error);
+    // Handle error (e.g., show error message to user)
+});
+      </script>
+      <script>
+        const display_books = () => {
+    const token = localStorage.getItem('token');
+
+    fetch('http://127.0.0.1:5000/display_books', {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`, // Replace token with your actual JWT token
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Data from server:', data); // Log data received from server
+
+        const bookContainer = document.getElementById('bookContainer');
+        bookContainer.innerHTML = ''; // Clear previous content
+
+        const username = data.username; // Assuming 'username' is directly accessible in the response
+        const isAdmin = data.admin; // Assuming 'admin' is a boolean indicating admin status
+        const books = data.books; // Assuming 'books' is directly accessible in the response
+
+        console.log('Current user:', username);
+        console.log('Is admin?', isAdmin);
+
+        books.forEach(book => {
+            // Create elements for book details
+            const bookDiv = document.createElement('div');
+            bookDiv.style.margin = '10px';
+            bookDiv.style.padding = '10px';
+            bookDiv.style.border = '1px solid #ccc';
+            bookDiv.style.width = '300px';
+
+            const titleElement = document.createElement('h3');
+            titleElement.textContent = book.title;
+
+            const authorElement = document.createElement('p');
+            authorElement.textContent = `Author: ${book.author}`;
+
+            const imgElement = document.createElement('img');
+            imgElement.src = `http://127.0.0.1:5000/media/${book.photo_path}`;
+            imgElement.alt = `${book.title}'s Photo`;
+            imgElement.style.maxWidth = '100%';
+            imgElement.style.marginBottom = '10px';
+
+            if (book.is_available === true) {
+                const loanButton = document.createElement('button');
+                loanButton.textContent = 'Loan Now';
+                loanButton.addEventListener('click', () => navigateToBookDetails(book.id));
+                loanButton.classList.add('loan-button');
+                bookDiv.appendChild(loanButton);
+            } else if (book.is_available === false) {
+                if (book.loan_by === username) {
+                    const returnButton = document.createElement('button');
+                    returnButton.textContent = 'Return Book';
+                    returnButton.addEventListener('click', () => return_book(book.id));
+                    returnButton.style.marginBottom = '5px';
+                    bookDiv.appendChild(returnButton);
+                } else {
+                    const unavailableText = document.createElement('p');
+                    unavailableText.textContent = 'Unavailable';
+                    bookDiv.appendChild(unavailableText);
+                }
+            }
+
+            // Display delete button only if the user is admin
+            if (isAdmin) {
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = `Delete Book`;
+                deleteButton.addEventListener('click', () => delete_book(book.id));
+                deleteButton.classList.add('delete-button');
+                bookDiv.appendChild(deleteButton);
+                
+            }
+
+            // Append elements to bookDiv
+            bookDiv.appendChild(titleElement);
+            bookDiv.appendChild(authorElement);
+            bookDiv.appendChild(imgElement);
+
+            // Append bookDiv to bookContainer
+            bookContainer.appendChild(bookDiv);
+        });
+    })
+    .catch(error => console.error('Error fetching books:', error));
+};
+// Call display_books function when the page loads
+window.onload = display_books;
+</script>
+
+<script>
+const navigateToBookDetails = (id) => {
+    const token = localStorage.getItem('token'); // Retrieve token from localStorage
+
+    axios.get(`http://127.0.0.1:5000/book/${id}`, {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    })
+    .then(response => {
+        // Assuming response.data contains the book details JSON
+        console.log('Book details:', response.data);
+        const encodedData = encodeURIComponent(JSON.stringify(response.data));
+        // Navigate to book details page
+        // Redirect to single_book.html after fetching book details
+        window.location.href = `single_book.html?data=${encodedData}`;
+    })
+    .catch(error => {
+        console.error('Error fetching book details:', error);
+        // Handle error fetching book details (e.g., display error message)
+    });
+};
+</script>
+   
+    <script> // return book function
+        const return_book = (id) => {
+            const token = localStorage.getItem('token'); // Retrieve token from localStorage
+
+            // Ensure token is available and valid
+            if (!token) {
+                console.error('No token found. User may not be authenticated.');
+                return; // Optionally handle scenario where token is missing
+            }
+
+            console.log('Returning book:', id);
+            console.log('Token:', token); // Log token for verification
+
+            axios.delete(`http://127.0.0.1:5000/returnbook/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}` // Include the token in the request header
+                }
+            }).then(response => {
+                console.log('Book returned successfully:', response.data);
+                // Optionally, update UI or perform other actions upon successful book return
+            }).catch(error => {
+                console.error('Error returning book:', error);
+                // Log detailed error message for debugging
+                if (error.response) {
+                    // The request was made and the server responded with a status code
+                    console.error('Response status:', error.response.status);
+                    alert(error);
+                } else if (error.request) {
+                    // The request was made but no response was received
+                    console.error('No response received:', error.request);
+                } else {
+                    // Something happened in setting up the request that triggered an error
+                    console.error('Error setting up request:', error.message);
+                }
+                // Optionally, display an error message to the user
+                // Example: showSnackbar('Failed to return book. Please try again later.');
+            });
+        };
+
+    </script>
+    <script> // search book function
+const navigate_by_search = () => {
+    const token = localStorage.getItem('token');
+    const searchInput = document.getElementById("bookName").value;
+
+    axios.post(`http://127.0.0.1:5000/search`, { search: searchInput }, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => {
+        console.log(response.data); // Log response data to console
+
+        // Check if response data is in expected format
+        if (response.data && response.data.books) {
+            const encodedData = encodeURIComponent(JSON.stringify(response.data)); // Encode data for URL
+            window.location.href = `search_results.html?data=${encodedData}`; // Redirect to results page
+        } else {
+            console.error('Invalid data format received:', response.data);
+            // Handle unexpected response format
+        }
+    })
+    .catch(error => {
+        console.error('Error searching books:', error);
+        // Handle error searching books (e.g., display error message)
+    });
+
+    console.log(searchInput); // Log search input to console
+};
+    </script>
+    <script> // just an accsess to user loans html
+          const navigateToMyLoans = () => {
+            window.location.href = 'my_loans.html'; // Replace with your loans page URL
+        };
+    </script>
+    <script> // just an accsess to user account detailes
+        const navigateToUserDetailes=()=>{
+            window.location.href = 'account_detailes.html'
+        }
+    </script>
+    <script> // delete book function
+       const delete_book = (id) => {
+    const token = localStorage.getItem('token'); // Retrieve token from localStorage
+
+    axios.delete(`http://127.0.0.1:5000/delete_book/${id}`, {
+        headers: {
+            Authorization: `Bearer ${token}` // Include the token in the request header
+        }
+    })
+    .then(response => {
+        console.log('Delete book response:', response.data);
+        alert('Book deleted successfully.'); // Example: show alert or update UI
+        // Optionally, update UI or perform other actions upon successful deletion
+        // Example: Remove book from UI
+    })
+    .catch(error => {
+        console.error('Error deleting book:', error);
+        if (error.response) {
+            console.error('Response status:', error.response.status);
+            if (error.response.status === 400) {
+                alert('Cannot delete book. Active loans exist.'); // Show specific error message
+                // Optionally handle other error scenarios
+            } else {
+                alert('Failed to delete book. Please try again later.'); // Generic error message
+            }
+        } else {
+            console.error('Error details:', error.message);
+            alert('Failed to delete book. Please try again later.'); // Fallback error message
+        }
+    });
+};
+    </script>
+</body>
+
+</html>

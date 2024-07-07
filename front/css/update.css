@@ -1,0 +1,20 @@
+.detailes{
+    /* Adjust opacity for a cleaner look */
+    background-color: rgba(255, 255, 255, 0.555);
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    border-color: black;
+    padding: 15px; /* Adjusted padding for the login div */
+    width: 70%; /* Reduced width for the login div */
+    max-width: 500px; /* Adjusted maximum width */
+    margin-left: 376px;
+    margin-top: 150px;
+    text-align: center; 
+}
+.backImg{
+    background-image: url(/front/media/pexels-element5-1370295.jpg);
+}
+.email{
+    color: black;
+    font-weight: bold;
+}

@@ -1,0 +1,150 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.background-image {
+    background-image: url(/front/media/pexels-element5-1370295.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+header {
+    background-color: rgba(255, 255, 255, 0.774);
+    backdrop-filter: blur(1px);
+    text-align: center;
+    padding: 20px;
+    color: rgb(15, 15, 15);
+    font-family: Arial, Helvetica, sans-serif
+}
+
+.navbar {
+    text-align: center;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.774);
+}
+
+.navButton {
+    background-color: #007bff; /* Blue */
+    color: rgb(10, 10, 10);
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin: 5px;
+    border-radius: 5px;
+}
+
+.navButton:hover {
+    opacity: 0.8;
+}
+
+.search-heading {
+    text-align: center;
+    color: black;
+    margin-top: 20px;
+}
+
+.form-container {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.bookName {
+    color: black;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.bookNameInput {
+    padding: 5px;
+    width: 200px;
+    margin-right: 10px;
+}
+
+.searchButton {
+    background-color: #5f1bdd; /* Purple */
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.searchButton:hover {
+    opacity: 0.8;
+}
+
+#bookContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+#bookContainer > div {
+    background-color: rgba(255, 255, 255, 0.774); /* Semi-transparent white */
+    backdrop-filter: blur(10px); /* For a blurred background effect */
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 10px;
+    width: 300px;
+    border-radius: 5px;
+}
+
+#bookContainer img {
+    max-width: 100%;
+    height: auto;
+}
+
+button {
+    background-color: #0a0a0a; /* Blue */
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-top: 5px;
+    border-radius: 5px;
+}
+
+button:hover {
+    opacity: 0.8;
+}
+
+#admin_ops {
+    text-align: center;
+    margin-top: 10px; /* Adjust top margin as needed */
+}
+
+#admin_ops .adminOpsButton {
+    background-color: #f44336; /* Red */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin: 5px;
+    border-radius: 5px;
+}
+
+#admin_ops .adminOpsButton:hover {
+    opacity: 0.8;
+}
+.loan-button{
+    background-color: #111111bb;
+    color: white;
+    border-radius: 10px;
+    padding: 10px;
+    transition: background-color 0.3s ease;  
+    margin-left: 15px;
+}
+
+.delete-button{
+    background-color: #111111bb;
+    color: white;
+    border-radius: 10px;
+    padding: 10px;
+    transition: background-color 0.3s ease;
+    margin-left: 75px;  
+    
+}

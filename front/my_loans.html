@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Loans</title>
+    <style>
+
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="css/my_loans.css">
+</head>
+
+<body class="background-image">
+    <h1 class="header">My Loans</h1>
+
+    <div id="loan-list">
+        <!-- Loan details will be displayed here dynamically -->
+    </div>
+
+    <script>// Function to fetch user loans using Axios
+        const fetchUserLoans = () => {
+            const token = localStorage.getItem('token'); // Assuming token is stored in localStorage
+
+            axios.get('http://127.0.0.1:5000/my_loans', {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+                .then(response => {
+                    console.log('Loans data:', response.data);
+
+                    // Process loans data and display on the page
+                    const loans = response.data.loans;
+                    const loanListContainer = document.getElementById('loan-list');
+
+                    loans.forEach(loan => {
+                        const loanDiv = document.createElement('div');
+                        loanDiv.classList.add('loan-item');
+
+
+
+
+                        const bookTitle = document.createElement('p');
+                        bookTitle.textContent = ` ${loan.book.title}`;
+
+                        const author = document.createElement('p');
+                        author.textContent = `Author: ${loan.book.author}`;
+
+                        const returnDate = document.createElement('p');
+                        returnDate.textContent = `Return till: ${loan.book.require_return_date}`;
+
+                        const bookImg = document.createElement('img');
+                        bookImg.src = `http://127.0.0.1:5000/media/${loan.book.photo_path}`;
+                        bookImg.alt = `${loan.book.title} Cover`;
+
+                        loanDiv.appendChild(bookImg); // Append book image
+                        loanDiv.appendChild(bookTitle);
+                        loanDiv.appendChild(author);
+                        loanDiv.appendChild(returnDate);
+
+                        loanListContainer.appendChild(loanDiv);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching user loans:', error);
+                    // Handle error (e.g., display error message on the page)
+                });
+        };
+
+        // Call the fetchUserLoans function when the page loads
+        window.onload = fetchUserLoans;
+    </script>
+</body>
+
+</html>

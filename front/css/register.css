@@ -1,0 +1,42 @@
+.registerForm {
+    background-color: rgba(255, 255, 255, 0.555); /* Adjust opacity for a cleaner look */
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    border-color: black;
+    padding: 15px; /* Adjusted padding for the login div */
+    width: 70%; /* Reduced width for the login div */
+    max-width: 500px; /* Adjusted maximum width */
+    margin-left: 376px;
+    margin-top: 150px;
+    text-align: center; /* Center-align text content */
+}
+
+.inputs {
+    margin-left: 10px;
+    text-align: center;
+    font-weight: bold;
+    font-size: large;
+     /* Adjust as needed */
+}
+
+.button, .button1 {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #202020bb;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    display: block;
+    margin: 0 auto;  /* Adjust as needed */
+}
+button:hover{
+    background-color: #96989b8a;
+}
+
+.background-image {
+    background-image: url('/front/media/pexels-element5-1370295.jpg');
+    background-size: cover;
+    background-position: center;
+    /* Additional background properties can be added as needed */
+}

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="css/results.css">
+</head>
+<body class="background-image">
+    <h1 class="header">Search Results</h1>
+    <div id="bookContainer" class="bookContainer"></div>
+    </div>
+
+    <script> // Function to fetch search results and display them
+        const token = localStorage.getItem('token');
+        const urlParams = new URLSearchParams(window.location.search);
+        const encodedData = urlParams.get('data');
+
+        if (encodedData) {
+            const decodedData = JSON.parse(decodeURIComponent(encodedData));
+
+            // Display the books directly from decodedData
+            displayBooks(decodedData.books);
+        } else {
+            console.error('No search results found or invalid format.');
+        }
+
+        function displayBooks(books) {
+            const bookContainer = document.getElementById('bookContainer');
+            bookContainer.innerHTML = ''; // Clear previous content
+
+            books.forEach(book => {
+                const bookDiv = document.createElement('div');
+                bookDiv.style.margin = '10px';
+                bookDiv.style.padding = '10px';
+                bookDiv.style.borderRadius= '10px'
+                bookDiv.style.width = '200px';
+                bookDiv.style.backgroundColor= 'rgba(255, 255, 255, 0.7)';
+                bookDiv.style.backdropFilter = 'blur(10px)';
+                
+
+                const titleElement = document.createElement('h3');
+                titleElement.style.marginLeft ='60px'
+                titleElement.textContent = book.title;
+
+                const authorElement = document.createElement('p');
+                authorElement.style.marginLeft ='60px'
+                authorElement.textContent = `Author: ${book.author}`;
+
+                const imgElement = document.createElement('img');
+                imgElement.src = `http://127.0.0.1:5000/media/${book.photo_path}`;
+                imgElement.alt = `${book.title}'s Photo`;
+                imgElement.style.maxWidth ='35%';
+                imgElement.style.marginBottom = '10px';
+                imgElement.style.marginLeft = '60px';
+                console.log(book.is_available);
+                if (book.is_available === true) {
+                    const loanButton = document.createElement('button');
+                    loanButton.textContent = 'Loan Now';
+                    loanButton.classList.add('loan-button')
+                    loanButton.addEventListener('click', () => navigateToBookDetails(book.id));
+                    bookDiv.appendChild(loanButton);
+                } else if (book.is_available === false) {
+                    const loaner_name = document.createElement('p');
+                    loaner_name.textContent = `Loaned by: ${book.loan_by}`;
+                    bookDiv.appendChild(loaner_name);
+
+                    const returnButton = document.createElement('button');
+                    returnButton.textContent = 'Return Book';
+                    returnButton.classList.add('return-button')
+                    returnButton.addEventListener('click', () => return_book(book.id));
+                    bookDiv.appendChild(returnButton);
+                }
+
+                // Append elements to bookDiv
+                bookDiv.appendChild(titleElement);
+                bookDiv.appendChild(authorElement);
+                bookDiv.appendChild(imgElement);
+
+                // Append bookDiv to bookContainer
+                bookContainer.appendChild(bookDiv);
+            });
+        }
+
+        // Function to navigate to book details page
+        function navigateToBookDetails(id) {
+            axios.get(`http://127.0.0.1:5000/book/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            .then(response => {
+                const encodedData = encodeURIComponent(JSON.stringify(response.data));
+                window.location.href = `single_book.html?data=${encodedData}`;
+            })
+            .catch(error => {
+                console.error('Error fetching book details:', error);
+                // Handle error fetching book details (e.g., display error message to user)
+            });
+        }
+
+        // Function to handle returning a book
+        function return_book(id) {
+            axios.delete(`http://127.0.0.1:5000/returnbook/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            .then(response => {
+                console.log('Book returned successfully:', response.data)
+                window.location.href="homepage.html"
+                // Optionally update UI or show success message
+            })
+            .catch(error => {
+                console.error('Error returning book:', error);
+                // Handle error returning book (e.g., display error message to user)
+            });
+        }
+    </script>
+  
+    <script> // function for loan book
+             function loan_book(id) {
+            // Retrieve the token from local storage
+            const token = localStorage.getItem('token');
+            console.log(token)
+
+            if (!token) {
+                console.error('Token not found. User may not be logged in.');
+                return;
+            }
+
+            // Send POST request to loan the book
+            axios.post(`http://127.0.0.1:5000/loanbook/${id}`, null, {
+                headers: {
+                    Authorization: `Bearer ${token}` // Include the token in the request header
+                }
+            })
+            .then(response => {
+                console.log('Book loaned successfully:', response.data);
+                })
+            .catch(err => {
+                console.error('Error loaning book:', err);
+                // Optionally handle error cases, such as displaying an error message
+            });
+        }
+    </script>
+</body>
+</html>

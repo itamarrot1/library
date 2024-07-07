@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Details</title>
+    <link rel="stylesheet" href="css/update.css">
+</head>
+<body class="backImg">
+    <div id="message"></div>
+    
+    <div class="detailes">
+        <h1>your detailes</h1>
+        <p><strong>Username:</strong> <span id="username"></span> <button onclick="editField('username')">Edit</button></p>
+        <div id="usernameInput" style="display: none;">
+            <input type="text" id="usernameField">
+            <button onclick="updateField('username')">Save</button>
+            <button onclick="cancelEdit('username')">Cancel</button>
+        </div>
+    
+    
+    <div>
+        <p class="email"><strong>Email:</strong> <span id="email"></span> <button onclick="editField('email')">Edit</button></p>
+        <div id="emailInput" style="display: none;">
+            <input type="email" id="emailField">
+            <button onclick="updateField('email')">Save</button>
+            <button onclick="cancelEdit('email')">Cancel</button>
+        </div>
+    </div>
+
+    <div>
+        <p><strong>Loans:</strong> <span id="loans"></span></p>
+    </div>
+</div>
+    <!-- Include Axios library -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        // Function to fetch user details and populate HTML
+        function fetchUserDetails() {
+            // Fetch JWT token from wherever it's stored (localStorage, cookie, etc.)
+            const token = localStorage.getItem('token'); // Adjust this based on your token storage method
+
+            axios.get('http://127.0.0.1:5000/display_connected_user_details', {
+                headers: {
+                    Authorization: `Bearer ${token}` // Attach JWT token as Authorization header
+                }
+            })
+            .then(function(response) {
+                const user = response.data;
+                console.log(user.username);
+                document.getElementById('username').textContent = user.username;
+                document.getElementById('email').textContent = user.email;
+                
+
+                // Display loans if available
+                if (user.loans) {
+                    document.getElementById('loans').textContent = user.loans // Adjust as per your loans data structure
+                } else {
+                    document.getElementById('loans').textContent = 'No loans found';
+                }
+            })
+            .catch(function(error) {
+                console.error('Error fetching user details:', error);
+                document.getElementById('message').innerHTML = `<p>Error: ${error.message}</p>`;
+            });
+        }
+
+        // Initial fetch when the page loads
+        fetchUserDetails();
+
+        // Function to show input field for editing
+        function editField(field) {
+            // Hide the current text and show the input field for editing
+            document.getElementById(`${field}`).style.display = 'none';
+            document.getElementById(`${field}Input`).style.display = 'block';
+        }
+
+        // Function to update user details
+        function updateField(field) {
+            // Get the updated value from the input field
+            const newValue = document.getElementById(`${field}Field`).value;
+            
+            // Send a PATCH request to update the field
+            const token = localStorage.getItem('token'); // Fetch JWT token
+            axios({
+                method: 'PATCH',
+                url: 'http://127.0.0.1:5000/update_user',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`
+                },
+                data: JSON.stringify({
+                    [field]: newValue
+                })
+            })
+            .then(function(response) {
+                // Update the displayed value and hide the input field
+                document.getElementById(`${field}`).textContent = newValue;
+                document.getElementById(`${field}`).style.display = 'inline';
+                document.getElementById(`${field}Input`).style.display = 'none';
+                document.getElementById('message').innerHTML = `<p>${response.data.message}</p>`;
+            })
+            .catch(function(error) {
+                console.error('Error updating user:', error);
+                document.getElementById('message').innerHTML = `<p>Error: ${error.message}</p>`;
+            });
+        }
+
+        // Function to cancel edit and revert to display mode
+        function cancelEdit(field) {
+            // Hide the input field and show the current text
+            document.getElementById(`${field}`).style.display = 'inline';
+            document.getElementById(`${field}Input`).style.display = 'none';
+        }
+    </script>
+</body>
+</html>

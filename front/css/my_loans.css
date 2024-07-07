@@ -1,0 +1,32 @@
+.loan-item {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 70px;
+    background-color: rgba(255, 255, 255, 0.705); /* Adjust opacity for a cleaner look */
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    width: 300px;
+    font-weight: bold;
+    
+    
+}
+
+.loan-item img {
+    max-width: 100px;
+    height: auto;
+    margin-right: 10px;
+}
+.background-image{
+    background-image: url(/front/media/pexels-element5-1370295.jpg);
+}
+.header{
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: rgb(255, 255, 255);
+    width: 200px;
+    border-radius: 10px;
+    margin-left: 550px;
+    text-align: center;
+    
+}

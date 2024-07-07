@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="css/register.css">
+</head>
+
+<body class="background-image">
+
+    <div class="registerForm">
+        <label for="username" class="inputs">Username:</label>
+        <br>
+        <br>
+        <input type="text" id="username" required>
+        <br>
+        <br>
+        <label for="password" class="inputs">Password:</label>
+        <br>
+        <br>
+        <input type="password" id="password" required>
+        <br>
+        <br>
+        <label for="email" class="inputs">Email:</label>
+        <br>
+        <br>
+        <input type="text" id="email">
+        <br>
+        <br>
+        <button onclick="create_new_user()" class="button">Create User</button>
+        <br>
+        <br>
+        <button class="button1"><a href="index.html"> To sign in page</a></button>
+    </div>
+    <script> // create new user func
+
+        const create_new_user = () => {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const email = document.getElementById('email').value;
+
+            const userData = {
+                "username": username,
+                "password": password,
+                "email": email
+            };
+
+            axios.post('http://127.0.0.1:5000/Register', userData)
+                .then(function (response) {
+                    console.log('User added:', response.data)
+                    window.location.href = "index.html";
+                })
+                .catch(function (error) {
+                    console.error('Error adding user:', error);
+                    // Optionally, show an error message to the user
+                });
+        };
+    </script>
+
+</body>
+
+</html>

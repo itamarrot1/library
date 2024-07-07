@@ -1,0 +1,103 @@
+/* styles.css */
+
+/* General resets and setup */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+/* Background image styling */
+.background-image {
+    background-image: url(/front/media/pexels-element5-1370295.jpg);
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-family: Arial, sans-serif;
+}
+
+/* Image styling */
+img {
+    width: 100%; /* Ensures the image fills its container */
+    height: fit-content; /* Maintains aspect ratio */
+    /* Additional image styling if needed */
+}
+
+/* Heading styling */
+h2, h4 {
+    margin-bottom: 20px;
+    text-align: center; /* Center-align headings */
+}
+
+/* Label styling */
+label {
+    margin-right: 10px;
+    display: block;
+    text-align: center; /* Center-align labels */
+    width: 100%; /* Full width for labels */
+}
+
+/* Input styling */
+input {
+    margin-bottom: 10px;
+    padding: 8px; /* Adjusted padding for inputs */
+    width: 200px; /* Adjust input width */
+    box-sizing: border-box; 
+    border-radius: 10px; /* Ensure padding is included in width */
+}
+
+/* Button styling */
+button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #202020bb;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    display: block;
+    margin: 0 auto; /* Center buttons horizontally */
+}
+
+button:hover {
+    background-color: #96989b8a;
+}
+
+/* Message styling */
+#message {
+    margin-top: 10px;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    border-radius: 5px;
+    border-color: black;
+    display: none;
+}
+
+/* Link styling */
+a {
+    color: white;
+    text-decoration: none;
+}
+
+/* Username and password styling */
+.username, .password {
+    font-weight: bold;
+    color: black;
+    text-align: center; /* Center-align labels */
+}
+
+/* Login div styling */
+.login {
+    background-color: rgba(255, 255, 255, 0.3); /* Adjust opacity for a cleaner look */
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    padding: 15px; /* Adjusted padding for the login div */
+    width: 70%; /* Reduced width for the login div */
+    max-width: 500px; /* Adjusted maximum width */
+    text-align: center; /* Center-align text content */
+}

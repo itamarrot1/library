@@ -1,0 +1,33 @@
+.background-image{
+    background-image: url(/front/media/pexels-element5-1370295.jpg);
+    background-size: cover;
+}
+.header{
+    color: white;
+}
+.book-detailes{
+    background-color: rgba(255, 255, 255, 0.719); /* Adjust opacity for a cleaner look */
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    padding: 20px; /* Adjusted padding for the login div */
+    width: 40%; /* Reduced width for the login div */
+    max-width: 400px;
+    margin-left: 450px; /* Adjusted maximum width */
+    text-align: center; /* Center-align text content */
+    
+}
+.loan-button{
+    background-color: #111111bb;
+    color: white;
+    border-radius: 10px;
+    padding: 10px;
+    transition: background-color 0.3s ease;
+
+}
+.loan-button:hover{
+    background-color: #96989b8a;
+}
+.book-author{
+   font-weight: bold;
+   font-size: large;
+}
